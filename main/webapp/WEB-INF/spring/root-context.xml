@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 여기는 설정파일이다
+	     스프링이 구동 될때 컴파일러가 컨테이너에 객체를 만든다.
+	   개발 코등에서는 필요한 객체를 컨테이너로 부터 주소를 주입 받는다.
+	   이렇게 컨테이너로 객체를 만들어 놓으면 비지니스 서비스를 개발 할때 접근제어자
+	   뭐 생각 필요없이. 그냥 여기서 주소만 주입 받아서 개발한다.  -->	
+		<!-- 오라클 bean -->
+	<bean
+	class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+	id="dataSource">  <!--  한 개가 빈설정.. 객체 설정.. 객체만들어 달라고 하는 것.. -->
+		<property name="driverClassName"  
+		value ="oracle.jdbc.driver.OracleDriver"> <!-- 객체의 변수 -->				
+		</property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+		<property name="username" value="system"></property>
+		<property name="password" value="11111111"></property>	
+	</bean>
+	
+	<!--  factory bean  쿼리문 공장 -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+		<property name="dataSource" ref="dataSource"></property>
+	   	<property name="mapperLocations"
+		value="classpath:/mapper/*Mapper.xml"></property>
+	
+	
+	</bean>
+	<!--  sqlsessionTemplate spring과 연동하기 위한 객체 -->
+	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>  
+	
+	<context:component-scan base-package="www.silver.service"/>
+	<context:component-scan base-package="www.silver.dao"/>
+	   
+	   
+	   
+	   
+		
+	
+</beans>
