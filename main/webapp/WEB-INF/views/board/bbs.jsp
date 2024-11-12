@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -441,66 +442,24 @@
         <table class="table">
           <thead class="table-dark">
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
+              <th scope="col" width=15%>type</th>
+              <th scope="col" width=25%>title</th>
+              <th scope="col" width=15%>비밀글 여부</th>
+              <th scope="col" width=25%>날짜</th>
+              <th scope="col" width=20%>수정/삭제</th>
             </tr>
           </thead>
           <tbody>
+          <c:forEach items="${list}" var="boardvo">  
+          <!-- 이 안의 부분이 모델이 넘겨준 사이즈만큼 행이 생겨야하므로 반복될 부분 , item은 넘겨준 변수명, var는 타입 -->
             <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
+              <th scope="row">${boardvo.type}</th>
+              <td>${boardvo.title}</td>
+              <td>${boardvo.viewmember}</td>
+              <td>${boardvo.indate}</td>
+              <td>수정 / <a href="del?delno=${boardvo.title}">삭제</a></td>
             </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-
+           </c:forEach>
           </tbody>
         </table>
         <div id="table_menu">

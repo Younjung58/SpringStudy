@@ -7,6 +7,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!--  parameterType은 쿼리문의 ?부분의 정보 -->
 	<insert id="inin" parameterType="www.silver.vo.BoardVO">
 		insert into kboard values (#{type},#{username},#{pass},#{title},#{content},#{viewmember},sysdate)
-	</insert>		
+	</insert>	
+	<select id="selectall" resultType="www.silver.vo.BoardVO">
+		select * from kboard
+	</select>
+	<delete id="delone" parameterType="String">
+		delete from kboard where title=#{delno}
+	</delete>	
 </mapper>
 
