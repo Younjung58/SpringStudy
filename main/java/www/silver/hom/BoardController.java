@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import www.silver.service.IF_BoardService;
 import www.silver.vo.BoardVO;
+import www.silver.vo.PageVO;
 
 @Controller
 public class BoardController {
@@ -21,14 +22,26 @@ public class BoardController {
 	IF_BoardService boardservice;
 	
 	@GetMapping(value="board") 
-	public String board(Model model) throws Exception{
+	public String board(Model model, @ModelAttribute PageVO pagevo) throws Exception{
 		// view로 값을 넘기기 위해서 Model객체를 사용
 		//Controller > service > dao > mapper
+		if(pagevo.getPage()==null) {
+			pagevo.setPage(1);
+		}
+		pagevo.setTotalCount(348);
+		
+		System.out.println(pagevo.getStartNo()+"시작 글번호");
+		System.out.println(pagevo.getEndNo()+"마지막 글번호");
+		System.out.println(pagevo.getStartPage()+"그룹 시작번호");
+		System.out.println(pagevo.getEndPage()+"그룹 끝 글번호");
+		
+		pagevo.setTotalCount(boardservice.totalCountBoard());
+		
 		// 전체 게시글을 가져오는 작업이 필요
 		// 서비스 layer에 전체글 서비스를 요청하고 결과를 리턴
-		List<BoardVO> list = boardservice.boardlist();
+		List<BoardVO> list = boardservice.boardlist(pagevo);
 		// 리턴받은 list변수의 값을 모델 객체로 뷰에게 전송하는 코드
-		System.out.println(list.size());
+//		System.out.println(list.size());
 		model.addAttribute("list", list);
 		// 뷰를 지정
 		return "board/bbs";
@@ -46,6 +59,26 @@ public class BoardController {
 		return "redirect:board";
 	}
 	
+	@GetMapping(value="mod")
+	public String mod(@RequestParam("modno") String modno, Model model) throws Exception {
+		BoardVO bvo = boardservice.modBoard(modno);
+//		System.out.println(bvo.getTitle());
+		// sysout은 서버입장에서는 부하 걸리는 작업이다.
+		// 그래서 테스트를 했다면 삭제하거나 주석처리를 해야한다.
+		// 실제로 sysout은 잘 사용하지 않는다.
+		// 테스트하기 위해서는 junit test라는 도구를 사용한다.
+		// 또 기록을 남기 위해서는 로그라는 기능을 사용한다.
+		// 로그는 홈 컨트롤러에 가면 볼 수 있다.
+		model.addAttribute("boardvo", bvo);
+		return "board/modform";
+	}
+	
+	@PostMapping(value="mod")
+	public String modsave(@ModelAttribute BoardVO bvo) throws Exception{
+		boardservice.modBoard(bvo);
+		return "redirect:board";
+	}
+	
 	@PostMapping(value="bwrdo") 
 	public String bwrdo(@ModelAttribute BoardVO boardvo) throws Exception{
 		//Controller > service > dao > mapper
@@ -58,4 +91,5 @@ public class BoardController {
 		// 해당 부분으로 바로 이동하는 리턴값으로 바꾸면 됨(redirect:돌아가고 싶은 부분에 해당하는 value값)
 		return "redirect:board";
 	}
+	
 }

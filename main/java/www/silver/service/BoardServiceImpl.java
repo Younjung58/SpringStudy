@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import www.silver.dao.IF_BoardDao;
 import www.silver.vo.BoardVO;
+import www.silver.vo.PageVO;
 
 @Service
 public class BoardServiceImpl implements IF_BoardService{
@@ -19,18 +20,18 @@ public class BoardServiceImpl implements IF_BoardService{
 	public void addBoard(BoardVO boardvo) throws Exception {
 		// TODO Auto-generated method stub
 		if(boardvo.getViewmember()!=null) {
-			boardvo.setViewmember("공개");
-		}else {
 			boardvo.setViewmember("비공개");
+		}else {
+			boardvo.setViewmember("공개");
 		}
 		// dao > mapper > DB insert
 		boarddao.insertBoard(boardvo);
 	}
 
 	@Override
-	public List<BoardVO> boardlist() throws Exception {
+	public List<BoardVO> boardlist(PageVO pagevo) throws Exception {
 		// TODO Auto-generated method stub
-		List<BoardVO> list = boarddao.selectAll();
+		List<BoardVO> list = boarddao.selectAll(pagevo);
 		for(BoardVO b : list) {
 			String date = b.getIndate();
 			b.setIndate(date.substring(0, 10));
@@ -46,5 +47,29 @@ public class BoardServiceImpl implements IF_BoardService{
 	public void deleteBoard(String delno) throws Exception {
 		// TODO Auto-generated method stub
 		boarddao.delete(delno);
+	}
+
+	@Override
+	public BoardVO modBoard(String modno) throws Exception {
+		// TODO Auto-generated method stub
+		return boarddao.selectone(modno);
+	}
+
+	@Override
+	public void modBoard(BoardVO bvo) throws Exception {
+		// TODO Auto-generated method stub
+		if(bvo.getViewmember()!=null) {
+			bvo.setViewmember("비공개");
+		}else {
+			bvo.setViewmember("공개");
+		}
+		boarddao.updateBoard(bvo);
+		
+	}
+
+	@Override
+	public int totalCountBoard() throws Exception {
+		// TODO Auto-generated method stub
+		return boarddao.totalCountBoard();
 	}
 }

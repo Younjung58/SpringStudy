@@ -8,11 +8,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="inin" parameterType="www.silver.vo.BoardVO">
 		insert into kboard values (#{type},#{username},#{pass},#{title},#{content},#{viewmember},sysdate)
 	</insert>	
-	<select id="selectall" resultType="www.silver.vo.BoardVO">
-		select * from kboard
+	<select id="selectall" resultType="www.silver.vo.BoardVO" parameterType="www.silver.vo.PageVO">
+	<!-- parameterType은 생략가능 -->
+		select t.* from (select sub.*, rownum as rnum from (select * from
+		kboard order by indate DESC) sub) t
+		where rnum between #{startNo} and #{endNo}
+	</select>
+	<select id="selectTitle" parameterType="String" resultType="www.silver.vo.BoardVO">
+		select * from kboard where title=#{title}
+	</select>
+	<select id="allcnt" resultType="int">
+		select count(*) from kboard
 	</select>
 	<delete id="delone" parameterType="String">
 		delete from kboard where title=#{delno}
-	</delete>	
+	</delete>
+	<update id="update" parameterType="www.silver.vo.BoardVO">
+		update kboard set type=#{type}, pass=#{pass}, content=#{content},
+		username=#{username},viewmember=#{viewmember} where title=#{title}
+	</update>
 </mapper>
 

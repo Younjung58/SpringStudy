@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import www.silver.vo.BoardVO;
+import www.silver.vo.PageVO;
 @Repository
 public class BoardDaoImpl implements IF_BoardDao{
 	
@@ -23,15 +24,34 @@ public class BoardDaoImpl implements IF_BoardDao{
 	}
 
 	@Override
-	public List<BoardVO> selectAll() throws Exception {
+	public List<BoardVO> selectAll(PageVO pagevo) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlsession.selectList(mapperquery+".selectall");
+		return sqlsession.selectList(mapperquery+".selectall",pagevo);
 	}
 
 	@Override
 	public void delete(String delno) throws Exception {
 		// TODO Auto-generated method stub
 		sqlsession.delete(mapperquery+".delone", delno);
+	}
+
+	@Override
+	public BoardVO selectone(String title) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlsession.selectOne(mapperquery+".selectTitle", title);
+	}
+
+	@Override
+	public void updateBoard(BoardVO bvo) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println(bvo.toString());
+		sqlsession.update(mapperquery+".update",bvo);
+	}
+
+	@Override
+	public int totalCountBoard() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlsession.selectOne(mapperquery+".allcnt");
 	}
 
 }
