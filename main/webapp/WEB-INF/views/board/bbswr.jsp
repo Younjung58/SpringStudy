@@ -437,7 +437,7 @@
         </div>
       </div>
 
-      <form class="row g-3" action="bwrdo" method="post">
+      <form class="row g-3" action="bwrdo" method="post" encType="multipart/form-data">
         <div class="col-md-4">
           <label for="inputState" class="form-label">놀이터 선택</label>
           <select id="inputState" class="form-select" name="type">
@@ -465,15 +465,16 @@
           <label for="floatingTextarea2">Comments</label>
         </div>
         <div class="mb-3">
-          <input class="form-control" type="file" id="formFile">
-          <input class="form-control" type="file" id="formFile">
+          <input class="form-control" type="file" id="formFile" name="file">
+          <input class="form-control" type="file" id="formFile" name="file">
+          <!-- 같은 name인 file에 대한 파라미터를 넘기면, length가 2인 배열식으로 넘어감 -->
         </div>
 
         <div class="col-12">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="gridCheck" name="viewmember">
             <label class="form-check-label" for="gridCheck">
-              회원만 보기
+             	회원만 보기
             </label>
           </div>
         </div>

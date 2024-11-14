@@ -36,9 +36,9 @@ public class BoardDaoImpl implements IF_BoardDao{
 	}
 
 	@Override
-	public BoardVO selectone(String title) throws Exception {
+	public BoardVO selectone(String num) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlsession.selectOne(mapperquery+".selectTitle", title);
+		return sqlsession.selectOne(mapperquery+".selectTitle", num);
 	}
 
 	@Override
@@ -52,6 +52,18 @@ public class BoardDaoImpl implements IF_BoardDao{
 	public int totalCountBoard() throws Exception {
 		// TODO Auto-generated method stub
 		return sqlsession.selectOne(mapperquery+".allcnt");
+	}
+
+	@Override
+	public void insertAttach(String fname) throws Exception {
+		// TODO Auto-generated method stub
+		sqlsession.insert(mapperquery+".insertattach",fname);
+	}
+
+	@Override
+	public List<String> selectAllAttach(String no) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlsession.selectList(mapperquery+".selectattach", no);
 	}
 
 }

@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- dao와 매핑은 namespace(dao의 mapperquery와 맞춰줄 부분), id(메소드 식별자), parameterType(dao가 넘겨준 값, 객체의 타입)을 맞춘다. -->
 	<!--  parameterType은 쿼리문의 ?부분의 정보 -->
 	<insert id="inin" parameterType="www.silver.vo.BoardVO">
-		insert into kboard values (#{type},#{username},#{pass},#{title},#{content},#{viewmember},sysdate)
+		insert into kboard values (#{type},#{username},#{pass},#{title},#{content},#{viewmember},sysdate,kboard_seq.nextval)
 	</insert>	
 	<select id="selectall" resultType="www.silver.vo.BoardVO" parameterType="www.silver.vo.PageVO">
 	<!-- parameterType은 생략가능 -->
@@ -15,17 +15,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where rnum between #{startNo} and #{endNo}
 	</select>
 	<select id="selectTitle" parameterType="String" resultType="www.silver.vo.BoardVO">
-		select * from kboard where title=#{title}
+		select * from kboard where num=#{num}
 	</select>
 	<select id="allcnt" resultType="int">
 		select count(*) from kboard
 	</select>
 	<delete id="delone" parameterType="String">
-		delete from kboard where title=#{delno}
+		delete from kboard where num=#{delno}
 	</delete>
 	<update id="update" parameterType="www.silver.vo.BoardVO">
-		update kboard set type=#{type}, pass=#{pass}, content=#{content},
-		username=#{username},viewmember=#{viewmember} where title=#{title}
+		update kboard set title=#{title},type=#{type}, pass=#{pass}, content=#{content},
+		username=#{username},viewmember=#{viewmember} where num=#{num}
 	</update>
+	
+	<insert id="insertattach">
+		insert into kboard_attach values((select max(num) from kboard),#{fname},default)
+	</insert>
+	<select id="selectattach" resultType="String">
+		select filename from kboard_attach where num=#{no}
+	</select>
 </mapper>
 

@@ -454,10 +454,10 @@
           <!-- 이 안의 부분이 모델이 넘겨준 사이즈만큼 행이 생겨야하므로 반복될 부분 , item은 넘겨준 변수명, var는 타입 -->
             <tr>
               <th scope="row">${boardvo.type}</th>
-              <td>${boardvo.title}</td>
+              <td><a href="view?no=${boardvo.num}">${boardvo.title}</a></td>
               <td>${boardvo.viewmember}</td>
               <td>${boardvo.indate}</td>
-              <td><a href="mod?modno=${boardvo.title}">수정</a> / <a href="del?delno=${boardvo.title}">삭제</a></td>
+              <td><a href="mod?modno=${boardvo.num}">수정</a> / <a href="del?delno=${boardvo.num}">삭제</a></td>
             </tr>
            </c:forEach>
             <tr>

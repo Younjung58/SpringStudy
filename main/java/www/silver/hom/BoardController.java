@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import www.silver.service.IF_BoardService;
+import www.silver.util.FileDataUtil;
 import www.silver.vo.BoardVO;
 import www.silver.vo.PageVO;
 
@@ -20,6 +22,9 @@ public class BoardController {
 	
 	@Inject
 	IF_BoardService boardservice;
+	
+	@Inject
+	FileDataUtil filedatautil;
 	
 	@GetMapping(value="board") 
 	public String board(Model model, @ModelAttribute PageVO pagevo) throws Exception{
@@ -80,16 +85,37 @@ public class BoardController {
 	}
 	
 	@PostMapping(value="bwrdo") 
-	public String bwrdo(@ModelAttribute BoardVO boardvo) throws Exception{
+	public String bwrdo(@ModelAttribute BoardVO boardvo, MultipartFile[] file) throws Exception{
 		//Controller > service > dao > mapper
 //		System.out.println(boardvo.toString());
+		// 업로드 되는지 확인하는 중간코드
+//		System.out.println(file.length);
+//		for (int i = 0; i < file.length; i++) {
+//			System.out.println(file[i].getOriginalFilename());
+//		}
+		
+		String[] newFileName = filedatautil.fileUpload(file);
+//		System.out.println(newFileName);
+		boardvo.setFilename(newFileName);		
 		boardservice.addBoard(boardvo);
+		// 해당 코드를 건들지 않고, 추가로 파일명도 같이 보내기 위해서 vo에 변수를 추가하고 변수에 리턴받은 파일명을 저장한다.
 		// 서비스 레이어에게 클라이언트로부터 받아온 요청에 대한 값을 넘겨서 요청을 처리할 수 있도록 하는 코드
 //		return "board/bbs";		
 		// 이 코드로 작성하게 되면 받아오는 모델객체가 없어서 같은 view화면으로 넘어간다해도 목록이 뜨지 않음
 		// 따라서 모델을 또 받아오는 코드를 작성해도 되지만, 이는 위의 board의 코드와 중복되게 되므로
 		// 해당 부분으로 바로 이동하는 리턴값으로 바꾸면 됨(redirect:돌아가고 싶은 부분에 해당하는 value값)
 		return "redirect:board";
+	}
+	
+	@GetMapping(value="view")
+	public String boardView(@RequestParam("no") String no, Model m) throws Exception {
+		BoardVO boardvo = boardservice.getBoard(no);
+		// attach 가져오기
+		List<String> attachList=boardservice.getAttach(no);
+		// view에게 전송할 값들.. 게시글과 첨부파일 리스트
+		m.addAttribute("boardvo", boardvo);
+		m.addAttribute("attachList", attachList);
+		return "board/dview";
 	}
 	
 }

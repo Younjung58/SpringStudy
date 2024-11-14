@@ -21,8 +21,17 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="www.silver.hom" />
+	<beans:bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id ="multipartResolver">
+		<beans:property name="maxUploadSize" value="10485760"></beans:property> <!--  용량제한을 property로 10메가 제한 설정-->	
+	</beans:bean>
 	
+	<beans:bean class="java.lang.String" id="uploadPath"> 
+	<!-- 객체의 name과 id를 동일하게 지정, c드라이브의 tmp위치에 값을 저장하기 위해 value값을 지정 -->
+		<beans:constructor-arg value="c:\\tmp"></beans:constructor-arg>
+	</beans:bean>
+	
+	<context:component-scan base-package="www.silver.hom" />
+	<context:component-scan base-package="www.silver.util" />
 	
 	
 </beans:beans>

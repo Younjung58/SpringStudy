@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -433,7 +433,7 @@
       <div>
         <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">Java / DataBase 기록 남기기</h5>
+            <h5 class="card-title">자세히 보기</h5>
           </div>
         </div>
       </div>
@@ -441,50 +441,44 @@
       <form class="row g-3" action="mod" method="post">
         <div class="col-md-4">
           <label for="inputState" class="form-label">놀이터 선택</label>
-          <select id="inputState" class="form-select" name="type">
-            <option 
-            <c:if test="${boardvo.type eq 'Database'}">selected</c:if>>
-            Database</option>
-             <option 
-            <c:if test="${boardvo.type eq 'Java'}">selected</c:if>>
-            Java</option>
-          </select>
+            <input id="inputState" type="text" name="type" class="form-control" value="${boardvo.type}" readonly>
         </div>
         <div class="col-md-3">
           <label for="inputCity" class="form-label">작성자</label>
-          <input type="text" class="form-control" id="inputCity" name="username" value="${boardvo.username}">
+          <input type="text" class="form-control" id="inputCity" name="username" value="${boardvo.username}" readonly>
         </div>
         <div class="col-md-3">
           <label for="inputPassword4" class="form-label">Password</label>
-          <input type="password" class="form-control" id="inputPassword4" name="pass" value="${boardvo.pass}">
+          <input type="password" class="form-control" id="inputPassword4" name="pass" value="${boardvo.pass}" readonly>
         </div>
         <div class="col-12">
           <label for="inputAddress" class="form-label">제목</label>
-          <input type="text" class="form-control" id="inputAddress" placeholder="제목을 입력하세요" name="title" value="${boardvo.title}">
+          <input type="text" class="form-control" id="inputAddress" placeholder="제목을 입력하세요" name="title" value="${boardvo.title}" readonly>
           <!-- 제목은 수정이 불가능한 컨셉 -> readonly로 설정 -->
         </div>
         <div class="form-floating">
           <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-            style="height: 200px" name="content">${boardvo.content}</textarea>
+            style="height: 200px" name="content" readonly>${boardvo.content}</textarea>
           <label for="floatingTextarea2">Comments</label>
-        </div>
-        <div class="mb-3">
-          <input class="form-control" type="file" id="formFile">
-          <input class="form-control" type="file" id="formFile">
         </div>
 
         <div class="col-12">
           <div class="form-check">
             <input  <c:if test="${boardvo.viewmember eq '비공개'}">checked</c:if>
-            class="form-check-input" type="checkbox" id="gridCheck" name="viewmember">
+            class="form-check-input" type="checkbox" id="gridCheck" name="viewmember" onClick="return false;"/>
             <label class="form-check-label" for="gridCheck">
              	 회원만 보기
             </label>
           </div>
         </div>
+        	<c:forEach items="${attachList}" var="fname">
+        		<a href="download?filename=${fname }">fname</a>
+        		<img src="download?filename=${fname}">
+        	</c:forEach>
+        
         <div class="col-12">
         	<input type="hidden" name="num" value="${boardvo.num }">
-          <button type="submit" class="btn btn-primary">수정하기</button>
+          <button type="submit" class="btn btn-primary">확인</button>
         </div>
       </form>
     </div>

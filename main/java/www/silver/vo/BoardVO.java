@@ -8,6 +8,14 @@ public class BoardVO {
 	String content;
 	String viewmember;
 	String indate;
+	String num;
+	public String getNum() {
+		return num;
+	}
+	public void setNum(String num) {
+		this.num = num;
+	}
+	String[] filename;
 	public String getType() {
 		return type;
 	}
@@ -16,6 +24,12 @@ public class BoardVO {
 	}
 	public String getUsername() {
 		return username;
+	}
+	public String[] getFilename() {
+		return filename;
+	}
+	public void setFilename(String[] filename) {
+		this.filename = filename;
 	}
 	public void setUsername(String username) {
 		this.username = username;

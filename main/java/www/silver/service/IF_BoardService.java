@@ -15,4 +15,6 @@ public interface IF_BoardService {
 	public BoardVO modBoard(String modno) throws Exception;
 	public void modBoard(BoardVO bvo) throws Exception;		// 메서드 오버로딩 기법 사용
 	public int totalCountBoard() throws Exception;
+	public BoardVO getBoard(String no) throws Exception;
+	public List<String> getAttach(String no) throws Exception;
 }

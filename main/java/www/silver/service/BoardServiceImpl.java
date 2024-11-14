@@ -19,13 +19,26 @@ public class BoardServiceImpl implements IF_BoardService{
 	@Override
 	public void addBoard(BoardVO boardvo) throws Exception {
 		// TODO Auto-generated method stub
+		
 		if(boardvo.getViewmember()!=null) {
 			boardvo.setViewmember("비공개");
 		}else {
 			boardvo.setViewmember("공개");
 		}
 		// dao > mapper > DB insert
+		// 게시글을 kboard에 저장해라
 		boarddao.insertBoard(boardvo);
+		
+		// 만약 첨부파일이 있다면 첨부파일을 kboard_attach로 별도로 저장해라
+		String[] fname = boardvo.getFilename();
+		if(fname.length>=1) {
+			for (int i = 0; i < fname.length; i++) {
+				// kboard_attach 테이블에 저장하는 코드
+				if(fname[i]!=null) {
+					boarddao.insertAttach(fname[i]);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -72,4 +85,17 @@ public class BoardServiceImpl implements IF_BoardService{
 		// TODO Auto-generated method stub
 		return boarddao.totalCountBoard();
 	}
+
+	@Override
+	public BoardVO getBoard(String no) throws Exception {
+		// TODO Auto-generated method stub
+		return boarddao.selectone(no);
+	}
+
+	@Override
+	public List<String> getAttach(String no) throws Exception {
+		// TODO Auto-generated method stub
+		return boarddao.selectAllAttach(no);
+	}
+
 }
